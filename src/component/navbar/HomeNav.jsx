@@ -29,11 +29,6 @@ const HomeNav = () => {
                         <span>Login</span>
                     </NavLink>
                 </Menu.Item>
-                <Menu.Item key="4">
-                    <NavLink to="/rent-request">
-                        <span>Rent Request</span>
-                    </NavLink>
-                </Menu.Item>
             </Menu>
         </Header>
     );

@@ -1,44 +1,36 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import './style.css';
-import {Button, Checkbox, Form, Input} from 'antd';
+import {Button, Form, Input, message} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {useDispatch} from "react-redux";
 import axios from "axios";
 
 import {saveToken} from "../../redux/AuthenticateReducer";
+import {SERVER_LOC} from "../../constant/Data";
 
 const LoginForm = () => {
-    const [user,setUser] = useState({username:'',password:''});
     const dispatch= useDispatch();
     const navigate= useNavigate();
 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-     // console.log(values.username + " " + values.password);
-     let userD = {username: values.username, password: values.password};
-        setUser(userD);
-        console.log(userD)
+        let userD = {username: values.username, password: values.password};
         login(userD);
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-
     const login =(user)=>{
-        console.log(user);
-        axios.post("http://localhost:8080/auth",user)
+        axios.post(SERVER_LOC + "/auth",user)
             .then(res =>{
-                console.log(res);
                 if(res.status===200){
                     dispatch(saveToken(res.data));
-                    navigate('/dashboard');
-                } else{
-                    console.log("eror")
+                    navigate('/');
                 }
-            }).catch(e => console.log("error"));
+                else{
+                    message.error(() => "Username or password is not correct.");
+                }
+            }).catch(e => {
+            message.error( "Username or password is not correct.")
+        });
     }
 
     return (
@@ -76,11 +68,6 @@ const LoginForm = () => {
                     type="password"
                     placeholder="Password"
                 />
-            </Form.Item>
-            <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item>
             </Form.Item>
 
             <Form.Item>

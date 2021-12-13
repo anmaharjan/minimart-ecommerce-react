@@ -1,27 +1,34 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import './style.css';
 import ItemCard from "./ItemCard.jsx";
-import {ITEMS} from "../../constant/Data";
+import {SERVER_LOC} from "../../constant/Data";
+import axios from "axios";
+import {message} from "antd";
 
-class ItemList extends React.Component {
-    constructor(props) {
-        super(props);
+const ItemList = (props) => {
+    const [items, setItems] = useState([]);
 
-        this.state = {
-            items: ITEMS
-        }
-    }
-
-    render() {
-        return (
-            <div className="item-list-div">
-                {
-                    Object.keys(this.state.items).map(itemId => <ItemCard key={itemId} data={this.state.items[itemId]}/>)
+    const fetchItems = () => {
+        axios.get(SERVER_LOC + "/product")
+            .then(res => {
+                if(res.status === 200){
+                    setItems(res.data);
                 }
-            </div>
-        )
-    }
-}
+                else{
+                    message.error("Error while loading items");
+                }
+            })
+    };
 
-ItemList.propTypes = {}
+    useEffect(() => {
+        fetchItems();
+    }, [])
+
+    return (
+        <div className="item-list-div">
+            {items.map(item => <ItemCard key={item.id} data={item}/>)}
+        </div>
+    )
+};
+
 export default ItemList;
