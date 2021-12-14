@@ -63,3 +63,18 @@
 .rent-it-option span > *{
     width: 100%;
 }
+
+/*Review area*/
+.review-div{
+    width: 100%;
+    margin-top:20px;
+    margin-bottom: 30px;
+}
+.review-area .review-box{
+    margin-bottom: 10px;
+}
+.user-review{
+    border: 1px solid gainsboro;
+    padding: 5px;
+    margin-bottom: 10px;
+}

@@ -1,8 +1,40 @@
 import React, {useState} from 'react';
-import {Button, Col, Descriptions, Spin} from "antd";
+import {Button, Col, Descriptions, message, Spin} from "antd";
+import {SERVER_LOC} from "../../constant/Data";
+import {useNavigate} from "react-router-dom";
 
 const ItemDescription = (props) => {
+    const navigate = useNavigate();
     const [spin, setSpinning] = useState(false);
+    const isBuyer = props.authenticate.token!=='' && props.authenticate.roles[0]==='BUYER';
+    const [quantity, setQuantity] = useState(1);
+
+    const addToCart = () => {
+        setSpinning(true);
+        let cartinfo = {productId:props.data.id, userId: props.authenticate.userId, quantity: quantity};
+
+        fetch(SERVER_LOC+"/cart", {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + props.authenticate.token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cartinfo)
+            }
+        )
+            .then(res=> {
+                setSpinning(false);
+                return res.json();
+            })
+            .then(result => {
+                message.info(result.message);
+                navigate('/cart');
+            });
+    };
+
+    const handleChange = (e) => {
+        setQuantity(e.target.value);
+    }
 
     return (
         <Col md={12}>
@@ -15,6 +47,7 @@ const ItemDescription = (props) => {
                                   size='middle'
                     >
                         <Descriptions.Item label="Name">{props.data.name}</Descriptions.Item>
+                        {isBuyer?<Descriptions.Item label="Quantity"><input onChange={handleChange} value={quantity}/></Descriptions.Item>:""}
                         <Descriptions.Item label="In Stock">{props.data.stockQuantity>0?"Yes":"No"}</Descriptions.Item>
                         {
                             props.data.onSale?
@@ -30,15 +63,20 @@ const ItemDescription = (props) => {
                         <Descriptions.Item label="Description">{props.data.description}</Descriptions.Item>
                     </Descriptions>
 
-                    <div className="rent-it-option-div">
-                        <div className="rent-it-button">
-                            <Button type="primary"
-                                    size={'large'}
-                            >
-                                Add to Cart
-                            </Button>
-                        </div>
-                    </div>
+                    {
+                        isBuyer?
+                            <div className="rent-it-option-div">
+                                <div className="rent-it-button">
+                                    <Button type="primary"
+                                            size={'large'}
+                                            onClick={addToCart}
+                                    >
+                                        Add to Cart
+                                    </Button>
+                                </div>
+                            </div> :
+                            <p style={{marginTop: '10px', fontSize:'17px', color:'red'}}>Login as a Buyer to buy.</p>
+                    }
                 </div>
             </Spin>
         </Col>

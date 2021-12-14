@@ -7,6 +7,10 @@ import Item from "./view/item/Item";
 import Logout from "./component/logout/Logout";
 import Profile from "./view/profile/Profile";
 import Payment from "./view/payment/Payment";
+import Cart from "./view/cart/Cart";
+import Checkout from "./view/checkout/Checkout";
+import OrderHistory from "./view/order/OrderHistory";
+import OrderDetail from "./view/order/OrderDetail";
 
 function App() {
     return (
@@ -18,7 +22,10 @@ function App() {
               <Route path = "/item/:id" element={<Item/>}/>
               {/*assuming id will be passed with token*/}
               <Route path = "/logout" element={<Logout/>}/>
-              {/*<Route path = "/cart" element={<Cart/>}/>*/}
+              <Route path = "/cart" element={<Cart/>}/>
+              <Route path = "/checkout" element={<Checkout/>}/>
+              <Route path = "/order-history" element={<OrderHistory/>}/>
+              <Route path = "/order/:id" element={<OrderDetail/>}/>
               {/*<Route path = "/item" element={<Product/>}/>*/}
               <Route path = "/profile" element={<Profile/>}/>
               <Route path = "/user-info" element={<Profile/>}/>

@@ -40,9 +40,6 @@ const RegistrationForm = () => {
     const type = {buyer: 'BUYER', seller: 'SELLER'};
     const [form] = Form.useForm();
     const [registrationType, setRegistrationType] = useState('');
-    // const [userData, setUserData] = useState({
-    //     firstname: "", middlename: "", lastname: "", username: "", password: "",
-    //     address:"", city:"", state:"", contactNo:""});
 
     const chooseRegistrationType = (e, type) => {
         e.preventDefault();

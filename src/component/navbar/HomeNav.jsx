@@ -8,11 +8,6 @@ const {Header} = Layout;
 const HomeNav = () => {
     return (
         <Header className="nav-bar-header">
-            <span className="logo">
-                <Link to="/">
-                    {/*<img src={logo} alt="Easy Rent"/>*/}
-                </Link>
-            </span>
             <Menu className="nav-bar-menu" theme="dark" mode="horizontal">
                 <Menu.Item key="1">
                     <NavLink to="/">

@@ -26,11 +26,9 @@ const LoginForm = () => {
                     navigate('/');
                 }
                 else{
-                    message.error(() => "Username or password is not correct.");
+                    message.error( "Username or password is not correct.");
                 }
-            }).catch(e => {
-            message.error( "Username or password is not correct.")
-        });
+            }).catch(e => console.log('error'));
     }
 
     return (

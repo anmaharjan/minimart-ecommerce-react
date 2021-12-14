@@ -9,20 +9,10 @@ const {Header} = Layout;
 const BuyNav = () => {
     return (
         <Header className="nav-bar-header">
-            <span className="logo">
-                <Link to="/">
-                    {/*<img src={logo} alt="Easy Rent"/>*/}
-                </Link>
-            </span>
             <Menu className="nav-bar-menu" theme="dark" mode="horizontal">
                 <Menu.Item key="1">
                     <NavLink to="/">
                         <span>Home</span>
-                    </NavLink>
-                </Menu.Item>
-                <Menu.Item key="2">
-                    <NavLink to="/item">
-                        <span>Products</span>
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="3">
@@ -31,7 +21,7 @@ const BuyNav = () => {
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="4">
-                    <NavLink to="/orders">
+                    <NavLink to="/order-history">
                         <span>View Orders</span>
                     </NavLink>
                 </Menu.Item>
