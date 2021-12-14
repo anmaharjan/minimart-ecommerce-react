@@ -68,7 +68,6 @@ const Review = (props) => {
                         <Comment
                             className="user-review"
                             author={`${rev.user.firstname} ${rev.user.middlename} ${rev.user.lastname}`}
-                            // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="Han Solo" />}
                             content={
                                 <p>
                                     {rev.comment}
@@ -76,7 +75,6 @@ const Review = (props) => {
                             }
                             datetime={
                                 <Tooltip title={rev.createdDate}>
-                                    {/*<span>{moment().fromNow()}</span>*/}
                                 </Tooltip>
                             }
                         />

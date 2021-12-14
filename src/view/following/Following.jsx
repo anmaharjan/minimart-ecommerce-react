@@ -1,24 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import NavBar from "../../component/navbar/NavBar";
-import './style.css';
-import {Layout} from "antd";
+import CheckoutIndex from "../../component/checkout/CheckoutIndex";
 import FooterInd from "../../component/footer/FooterInd";
-import ProfileIndex from "../../component/profile/ProfileIndex";
+import {Layout} from "antd";
 
 const { Content } = Layout;
 
-const Profile = () => {
+const Following = () => {
     return (
         <Layout>
             <NavBar/>
 
             <Content className="main-body">
-                <ProfileIndex/>
+                <CheckoutIndex/>
             </Content>
             <FooterInd/>
         </Layout>
     );
-
 }
 
-export default Profile;
+export default Following;

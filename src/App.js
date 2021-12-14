@@ -6,7 +6,6 @@ import Login from "./view/login/Login";
 import Item from "./view/item/Item";
 import Logout from "./component/logout/Logout";
 import Profile from "./view/profile/Profile";
-import Payment from "./view/payment/Payment";
 import Cart from "./view/cart/Cart";
 import Checkout from "./view/checkout/Checkout";
 import OrderHistory from "./view/order/OrderHistory";
@@ -26,13 +25,7 @@ function App() {
               <Route path = "/checkout" element={<Checkout/>}/>
               <Route path = "/order-history" element={<OrderHistory/>}/>
               <Route path = "/order/:id" element={<OrderDetail/>}/>
-              {/*<Route path = "/item" element={<Product/>}/>*/}
               <Route path = "/profile" element={<Profile/>}/>
-              <Route path = "/user-info" element={<Profile/>}/>
-              <Route path = "/pay-info" element={<Payment/>}/>
-              <Route path = "/shipping" element={<Profile/>}/>
-              <Route path = "/billing" element={<Profile/>}/>
-              {/*<Route path = "/orders" element={<Orders/>}/>*/}
               {/*<Route path = "/approve-sellers" element={<ApproveSeller/>}/>*/}
               {/*<Route path = "/approve-reviews" element={<ApproveReview/>}/>*/}
 

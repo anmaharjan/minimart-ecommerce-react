@@ -58,14 +58,25 @@ const OrderDetailComp = () => {
                 orderDetail !== null ?
                     <>
                         <>
-                            <div className='cancel-btn'>
-                                <Button type="danger" size="large" onClick={cancelOrder}>Cancel Order</Button>
-                            </div>
+                            {
+                                orderDetail.orderStatus.status === 'NEW' ?
+                                    <div className='cancel-btn'>
+                                        <Button type="danger" size="large" onClick={cancelOrder}>Cancel Order</Button>
+                                    </div> : <></>
+                            }
+
                             <Descriptions title="User Info">
                                 <Descriptions.Item label="First Name">{orderDetail.user.firstname}</Descriptions.Item>
                                 <Descriptions.Item label="Middle Name">{orderDetail.user.middlename}</Descriptions.Item>
                                 <Descriptions.Item label="Last Name">{orderDetail.user.lastname}</Descriptions.Item>
                                 <Descriptions.Item label="Username">{orderDetail.user.username}</Descriptions.Item>
+                            </Descriptions>
+
+                            <Descriptions title="Billing Address">
+                                <Descriptions.Item label="Address">{orderDetail.user.billingAddress.address}</Descriptions.Item>
+                                <Descriptions.Item label="City">{orderDetail.user.billingAddress.city}</Descriptions.Item>
+                                <Descriptions.Item label="State">{orderDetail.user.billingAddress.state}</Descriptions.Item>
+                                <Descriptions.Item label="Contact No">{orderDetail.user.billingAddress.contactNo}</Descriptions.Item>
                             </Descriptions>
 
                             <Descriptions title="Shipping Address">
