@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Avatar, Button, Comment, Input, Tooltip} from "antd";
+import {Avatar, Button, Comment, Form, Input, Tooltip} from "antd";
 import {useSelector} from "react-redux";
 
 const { TextArea } = Input;
@@ -59,6 +59,10 @@ const reviews = [
 const Review = (props) => {
     const showCommentBox = props.authenticate.token!=='' && props.authenticate.roles[0]==='BUYER';
 
+    const postReview = (values) => {
+        let data = {userId:props.authenticate.userId, comment: values.review, productId:props.id};
+    };
+
     return (
         <div className="review-div">
             <h2>Review</h2>
@@ -85,8 +89,30 @@ const Review = (props) => {
             {
                 showCommentBox?
                     <div className="review-area">
-                        <TextArea className="review-box" rows={7}/>
-                        <Button type='primary' size='large'>Post</Button>
+                        <Form
+                            name="normal_login"
+                            className="login-form"
+                            onFinish={postReview}
+                        >
+                            <Form.Item
+                                name="review"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Must not be empty',
+                                    },
+                                ]}
+                            >
+                                <TextArea className="review-box" rows={7}/>
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" className="login-form-button">
+                                    Post
+                                </Button>
+                            </Form.Item>
+
+                        </Form>
                     </div>:<></>
             }
         </div>

@@ -35,12 +35,11 @@ const OrderList = (props) => {
     const navigate = useNavigate();
 
     const onRowClick = (id) => {
-        console.log(id);
         navigate('/order/' + id);
     };
 
     return (
-        <Table columns={columns}
+        <Table columns={columns} pagination={false}
                dataSource={props.orders}
                onRow={(record, rowIndex) => {
                    return {

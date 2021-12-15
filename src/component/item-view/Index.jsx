@@ -36,7 +36,7 @@ const Index = (props) => {
                     <Row>
                         <ItemImage data={data.productImages} name={data.name}/>
                         <ItemDescription data={data} authenticate={authenticate}/>
-                        <Review authenticate={authenticate}/>
+                        <Review authenticate={authenticate} id={data.id}/>
                     </Row> :
                     <div>
                         Cannot load the Page.

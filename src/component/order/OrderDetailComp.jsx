@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 import {SERVER_LOC} from "../../constant/Data";
-import {Button, Descriptions, message} from "antd";
+import {Button, Descriptions, message, Select} from "antd";
 import {useSelector} from "react-redux";
 import CartItem from "../cart/CartItem";
 import './style.css';
 
-const OrderDetailComp = () => {
+const { Option } = Select;
+
+const OrderDetailComp = (props) => {
     const navigate = useNavigate();
     const param = useParams();
     const authenticate = useSelector(state => state.authenticate);
     const [orderDetail, setOrderDetail] = useState(null);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const isSeller = authenticate.token!=='' && authenticate.roles[0]==='SELLER';
 
     const fetchOrderDetail = () => {
         fetch(SERVER_LOC + "/order/" + param.id, {
@@ -48,6 +50,40 @@ const OrderDetailComp = () => {
             });
     };
 
+    const changeOrderStatus = (value) => {
+        let data = {orderId: param.id, status: value}
+        fetch(SERVER_LOC + "/order/order-status/update", {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authenticate.token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }
+        )
+            .then(res=> res.json())
+            .then(result => {
+                message.info(result.message);
+            });
+    };
+
+    const changeInvoiceStatus = (value) => {
+        let data = {invoiceId: orderDetail.invoice.id, status: value}
+        fetch(SERVER_LOC + "/order/invoice-status/update", {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authenticate.token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            }
+        )
+            .then(res=> res.json())
+            .then(result => {
+                message.info(result.message);
+            });
+    };
+
     useEffect(() => {
         fetchOrderDetail();
     }, [])
@@ -59,7 +95,7 @@ const OrderDetailComp = () => {
                     <>
                         <>
                             {
-                                orderDetail.orderStatus.status === 'NEW' ?
+                                orderDetail.orderStatus.status === 'NEW' && !isSeller?
                                     <div className='cancel-btn'>
                                         <Button type="danger" size="large" onClick={cancelOrder}>Cancel Order</Button>
                                     </div> : <></>
@@ -87,11 +123,33 @@ const OrderDetailComp = () => {
                             </Descriptions>
 
                             <Descriptions title="Order Status">
-                                <Descriptions.Item label="Order Status">{orderDetail.orderStatus.status}</Descriptions.Item>
+                                {
+                                    isSeller ?
+                                        <Descriptions.Item label="Order Status">
+                                            <Select defaultValue={orderDetail.orderStatus.status}
+                                                    onChange={changeOrderStatus}>
+                                                <Option value="NEW">NEW</Option>
+                                                <Option value="SHIPPED">SHIPPED</Option>
+                                                <Option value="COMPLETED">COMPLETED</Option>
+                                                <Option value="CANCELLED">CANCELLED</Option>
+                                            </Select>
+                                        </Descriptions.Item> :
+                                        <Descriptions.Item label="Order Status">{orderDetail.orderStatus.status}</Descriptions.Item>
+                                }
                             </Descriptions>
 
                             <Descriptions title="Invoice">
-                                <Descriptions.Item label="Invoice Status">{orderDetail.invoice.invoiceStatus.status}</Descriptions.Item>
+                                {
+                                    isSeller ?
+                                        <Descriptions.Item label="Invoice Status">
+                                            <Select defaultValue={orderDetail.invoice.invoiceStatus.status}
+                                                    onChange={changeInvoiceStatus}>
+                                                <Option value="ISSUED">ISSUED</Option>
+                                                <Option value="PAID">PAID</Option>
+                                            </Select>
+                                        </Descriptions.Item> :
+                                        <Descriptions.Item label="Invoice Status">{orderDetail.invoice.invoiceStatus.status}</Descriptions.Item>
+                                }
                                 <Descriptions.Item label="Payment Type">{orderDetail.invoice.paymentDetail.paymentType}</Descriptions.Item>
                                 <Descriptions.Item label="Card No">{orderDetail.invoice.paymentDetail.cardNo}</Descriptions.Item>
                                 <Descriptions.Item label="Invoice Date">{orderDetail.invoice.invoiceDate}</Descriptions.Item>

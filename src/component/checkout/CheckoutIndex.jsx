@@ -72,7 +72,7 @@ const CheckoutIndex = () => {
                 }
                 else
                     message.error("Error.");
-            })
+            });
     }
 
     useEffect(() => {

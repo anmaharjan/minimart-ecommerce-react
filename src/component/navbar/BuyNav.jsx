@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import {Layout, Menu} from 'antd';
 import './style.css';
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const {Header} = Layout;
 
@@ -31,7 +31,14 @@ const BuyNav = () => {
                         <span>My Profile</span>
                     </NavLink>
                 </Menu.Item>
+
                 <Menu.Item key="6">
+                    <NavLink to="/following">
+                        <span>Following</span>
+                    </NavLink>
+                </Menu.Item>
+
+                <Menu.Item key="7">
                     <NavLink to="/logout">
                         <span>Logout</span>
                     </NavLink>

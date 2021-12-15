@@ -2,21 +2,21 @@ import React from 'react';
 import NavBar from "../../component/navbar/NavBar";
 import FooterInd from "../../component/footer/FooterInd";
 import {Layout} from "antd";
-import FollowingIndex from "../../component/following/FollowingIndex";
+import AddProductIndex from "../../component/add-product/AddProductIndex";
 
 const { Content } = Layout;
 
-const Following = () => {
+const AddProduct = () => {
     return (
         <Layout>
             <NavBar/>
 
             <Content className="main-body">
-                <FollowingIndex/>
+                <AddProductIndex/>
             </Content>
             <FooterInd/>
         </Layout>
     );
 }
 
-export default Following;
+export default AddProduct;

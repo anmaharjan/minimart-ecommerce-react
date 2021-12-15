@@ -7,7 +7,6 @@ export const authenticateSlicer = createSlice({
     initialState,
     reducers:{
         saveToken:(state,payload)=>{
-            console.log(payload);
             state.token = payload.payload.token;
             state.username = payload.payload.username;
             state.userId = payload.payload.userId;

@@ -16,16 +16,21 @@ const SellerNav = () => {
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <NavLink to="/item">
-                        <span>My Products</span>
+                    <NavLink to="/add-product">
+                        <span>Add Products</span>
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="3">
+                    <NavLink to="/order">
+                        <span>Orders</span>
+                    </NavLink>
+                </Menu.Item>
+                <Menu.Item key="4">
                     <NavLink to="/profile">
                         <span>My Profile</span>
                     </NavLink>
                 </Menu.Item>
-                <Menu.Item key="4">
+                <Menu.Item key="5">
                     <NavLink to="/logout">
                         <span>Logout</span>
                     </NavLink>

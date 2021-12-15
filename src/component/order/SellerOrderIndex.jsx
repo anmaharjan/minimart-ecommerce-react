@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import OrderList from "./OrderList";
 import {SERVER_LOC} from "../../constant/Data";
 import {message} from "antd";
+import OrderList from "./OrderList";
 import {useNavigate} from "react-router-dom";
 
-const BuyerOrderIndex = (props) => {
+const SellerOrderIndex = (props) => {
     const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
 
     const fetchOrders = () => {
-        fetch(SERVER_LOC + "/order/user/" + props.authenticate.userId, {
+        fetch(SERVER_LOC + "/order", {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + props.authenticate.token,
@@ -28,7 +28,7 @@ const BuyerOrderIndex = (props) => {
     };
 
     useEffect(() => {
-        if(props.authenticate.token === '' || props.authenticate.roles[0] !== 'BUYER')
+        if(props.authenticate.token === '' || props.authenticate.roles[0] !== 'SELLER')
             navigate('/');
 
         if(props.authenticate.userId !== 0)
@@ -42,4 +42,4 @@ const BuyerOrderIndex = (props) => {
     );
 }
 
-export default BuyerOrderIndex;
+export default SellerOrderIndex;

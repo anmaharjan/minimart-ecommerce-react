@@ -4,10 +4,10 @@ import './style.css';
 import {Button, Form, Input, message} from 'antd';
 import {LockOutlined, UserOutlined} from '@ant-design/icons';
 import {useDispatch} from "react-redux";
-import axios from "axios";
 
 import {saveToken} from "../../redux/AuthenticateReducer";
 import {SERVER_LOC} from "../../constant/Data";
+import axios from "axios";
 
 const LoginForm = () => {
     const dispatch= useDispatch();
@@ -25,11 +25,20 @@ const LoginForm = () => {
                     dispatch(saveToken(res.data));
                     navigate('/');
                 }
-                else{
-                    message.error( "Username or password is not correct.");
+            })
+            .catch((error) => {
+                if(error.response !== undefined){
+                    // Error
+                    switch (error.response.status) {
+                        case 403:
+                            message.error( "Username or password is not correct.");
+                        default:
+                            break;
+                    }
                 }
-            }).catch(e => console.log('error'));
-    }
+
+            });
+    };
 
     return (
         <Form
