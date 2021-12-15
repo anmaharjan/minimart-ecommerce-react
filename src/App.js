@@ -14,6 +14,7 @@ import Following from "./view/following/Following";
 import AddProduct from "./view/add-product/AddProduct";
 import UpdateProduct from "./view/update-product/UpdateProduct";
 import ApproveSeller from "./view/approve-seller/ApproveSeller";
+import ApproveReview from "./view/approve-review/ApproveReview";
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
 
               {/* -- Admin --*/}
               <Route path = "/approve-sellers" element={<ApproveSeller/>}/>
+              <Route path = "/approve-reviews" element={<ApproveReview/>}/>
               {/*<Route path = "/approve-reviews" element={<ApproveReview/>}/>*/}
 
 

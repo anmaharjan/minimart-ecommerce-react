@@ -53,28 +53,31 @@ const UpdateProductIndex = () => {
     };
 
 
-    const onUpdateProduct = (values) => {
+    const onUpdateProduct = async (values) => {
         let data = values;
         data['onSale'] = onSale;
         data['id'] = product.id;
         data['userId'] = authenticate.userId;
 
-        console.log(data);
-        fetch(SERVER_LOC + '/product', {
+        let response = await fetch(SERVER_LOC + '/product', {
             method: 'PUT',
             headers: {
                 'Authorization': 'Bearer ' + authenticate.token,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(result=>{
-                message.info(result.message);
-                navigate('/');
-            })
+        });
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success(result.message);
+            navigate('/');
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
     useEffect(() => {

@@ -1,67 +1,62 @@
-import React, {useState} from 'react';
-import {Avatar, Button, Comment, Form, Input, Tooltip} from "antd";
-import {useSelector} from "react-redux";
+import React, {createRef, useEffect, useRef, useState} from 'react';
+import {Button, Comment, Form, Input, message, Tooltip} from "antd";
+import {SERVER_LOC} from "../../constant/Data";
 
 const { TextArea } = Input;
 
-/*
-* {
-        "id": 3,
-        "comment": "This is comment",
-        "createdDate": "2021-12-13T23:47:59.159+00:00",
-        "updatedDate": "2021-12-13T23:47:59.159+00:00",
-        "user": {
-            "firstname": "Anish",
-            "middlename": "",
-            "lastname": "Maharjan",
-            "username": "anizz.maharjan@gmail.com"
-        },
-        "product": {
-            "id": 1,
-            "name": "Prrreaskdjf",
-            "productImages": [
-                {
-                    "imageUrl": "/images/products/1639351247740_Screenshot_from_2021-08-13_14-21-27.png"
-                },
-                {
-                    "imageUrl": "/images/products/1639351342434_Screenshot_from_2021-11-09_14-49-35.png"
-                }
-            ]
-        }
-    }*/
-const reviews = [
-    {
-        "id": 3,
-        "comment": "This is comment",
-        "createdDate": "12/13/2021 11:47:59",
-        "updatedDate": "12/13/2021 11:47:59",
-        "user": {
-            "firstname": "Anish",
-            "middlename": "",
-            "lastname": "Maharjan",
-            "username": "anizz.maharjan@gmail.com"
-        }
-    },
-    {
-        "id": 3,
-        "comment": "This is comment",
-        "createdDate": "12/13/2021 11:47:59",
-        "updatedDate": "12/13/2021 11:47:59",
-        "user": {
-            "firstname": "Anish",
-            "middlename": "",
-            "lastname": "Maharjan",
-            "username": "anizz.maharjan@gmail.com"
-        },
-    }
-];
-
 const Review = (props) => {
+    const form = useRef(null);
     const showCommentBox = props.authenticate.token!=='' && props.authenticate.roles[0]==='BUYER';
+    const [reviews, setReviews] = useState([]);
 
-    const postReview = (values) => {
-        let data = {userId:props.authenticate.userId, comment: values.review, productId:props.id};
+    const fetchReviews = () => {
+        fetch(SERVER_LOC + "/review/product/" + props.id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        )
+            .then(res=> {
+                if(res.status === 200)
+                    return res.json();
+                else message.error("Error while loading carts.");
+            })
+            .then(result => {
+                setReviews(result)
+            });
     };
+
+    const postReview = async (values) => {
+        let data = {userId:props.authenticate.userId, comment: values.review, productId:props.id};
+
+        let response = await fetch(SERVER_LOC + '/review', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + props.authenticate.token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 201){
+            message.success(result.message);
+            fetchReviews();
+            form.current.setFieldsValue({
+                review: ''
+            });
+        }
+        else{
+            message.error(result.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchReviews();
+    }, []);
 
     return (
         <div className="review-div">
@@ -79,6 +74,7 @@ const Review = (props) => {
                             }
                             datetime={
                                 <Tooltip title={rev.createdDate}>
+                                    {rev.createdDate}
                                 </Tooltip>
                             }
                         />
@@ -91,7 +87,8 @@ const Review = (props) => {
                     <div className="review-area">
                         <Form
                             name="normal_login"
-                            className="login-form"
+                            ref={form}
+                            className="review-form"
                             onFinish={postReview}
                         >
                             <Form.Item

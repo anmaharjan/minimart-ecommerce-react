@@ -34,25 +34,31 @@ const OrderDetailComp = (props) => {
             });
     };
 
-    const cancelOrder = () => {
-        fetch(SERVER_LOC + "/order/" + param.id + "/cancel", {
+    const cancelOrder = async () => {
+        let response = await fetch(SERVER_LOC + "/order/" + param.id + "/cancel", {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authenticate.token,
                     'Content-Type': 'application/json',
                 }
             }
-        )
-            .then(res=> res.json())
-            .then(result => {
-                message.info(result.message);
-                navigate('/order-history');
-            });
+        );
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success(result.message);
+            navigate('/order-history');
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
-    const changeOrderStatus = (value) => {
+    const changeOrderStatus = async (value) => {
         let data = {orderId: param.id, status: value}
-        fetch(SERVER_LOC + "/order/order-status/update", {
+        let response = await fetch(SERVER_LOC + "/order/order-status/update", {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + authenticate.token,
@@ -60,16 +66,22 @@ const OrderDetailComp = (props) => {
                 },
                 body: JSON.stringify(data)
             }
-        )
-            .then(res=> res.json())
-            .then(result => {
-                message.info(result.message);
-            });
+        );
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success(result.message);
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
-    const changeInvoiceStatus = (value) => {
+    const changeInvoiceStatus = async (value) => {
         let data = {invoiceId: orderDetail.invoice.id, status: value}
-        fetch(SERVER_LOC + "/order/invoice-status/update", {
+        let response = await fetch(SERVER_LOC + "/order/invoice-status/update", {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + authenticate.token,
@@ -77,11 +89,16 @@ const OrderDetailComp = (props) => {
                 },
                 body: JSON.stringify(data)
             }
-        )
-            .then(res=> res.json())
-            .then(result => {
-                message.info(result.message);
-            });
+        );
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success(result.message);
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
     useEffect(() => {
@@ -127,6 +144,7 @@ const OrderDetailComp = (props) => {
                                     isSeller ?
                                         <Descriptions.Item label="Order Status">
                                             <Select defaultValue={orderDetail.orderStatus.status}
+                                                    style={{ width: 200 }}
                                                     onChange={changeOrderStatus}>
                                                 <Option value="NEW">NEW</Option>
                                                 <Option value="SHIPPED">SHIPPED</Option>
@@ -143,6 +161,7 @@ const OrderDetailComp = (props) => {
                                     isSeller ?
                                         <Descriptions.Item label="Invoice Status">
                                             <Select defaultValue={orderDetail.invoice.invoiceStatus.status}
+                                                    style={{ width: 150 }}
                                                     onChange={changeInvoiceStatus}>
                                                 <Option value="ISSUED">ISSUED</Option>
                                                 <Option value="PAID">PAID</Option>

@@ -74,7 +74,17 @@
     margin-bottom: 10px;
 }
 .user-review{
-    border: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
     padding: 5px;
     margin-bottom: 10px;
+}
+
+.review-form{
+    width: 100%;
+}
+.comment-action{
+    color: blue;
+}
+.comment-action:hover{
+    color: skyblue;
 }

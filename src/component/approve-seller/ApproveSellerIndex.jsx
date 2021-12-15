@@ -67,22 +67,26 @@ const ApproveSellerIndex = () => {
             });
     };
 
-    const approveSeller = (value) => {
-        fetch(SERVER_LOC + "/user/seller/" + value.id + "/approve", {
+    const approveSeller = async (value) => {
+        let response = await fetch(SERVER_LOC + "/user/seller/" + value.id + "/approve", {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authenticate.token,
                     'Content-Type': 'application/json',
                 }
             }
-        )
-            .then(res=> {
-                return res.json();
-            })
-            .then(result => {
-                message.info(result.message);
-                fetchSellers();
-            });
+        );
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success(result.message);
+            fetchSellers();
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
     useEffect(() => {

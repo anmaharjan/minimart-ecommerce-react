@@ -59,45 +59,51 @@ const FollowingIndex = () => {
         return follow.id;
     };
 
-    const unfollow = (username) => {
-        fetch(SERVER_LOC + '/user/following/' + getFollowingId(username), {
+    const unfollow = async (username) => {
+        let response = await fetch(SERVER_LOC + '/user/following/' + getFollowingId(username), {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + authenticate.token,
                 'Content-Type': 'application/json',
             }
-        })
-            .then(res => {
-                if(res.status === 200){
-                    message.success("Followed Successful.");
-                    fetchAllSellers();
-                    fetchAllFollowing();
-                }
-                else
-                    message.error("Error.");
-            });
+        });
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.info("Unfollowed Successful.");
+            fetchAllSellers();
+            fetchAllFollowing();
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
-    const follow = (sellerId) => {
+    const follow = async (sellerId) => {
         let data = {userId: authenticate.userId, followingId:sellerId};
 
-        fetch(SERVER_LOC + '/user/following', {
+        let response = await fetch(SERVER_LOC + '/user/following', {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + authenticate.token,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
-        })
-            .then(res => {
-                if(res.status === 200){
-                    message.success("Followed Successful.");
-                    fetchAllSellers();
-                    fetchAllFollowing();
-                }
-                else
-                    message.error("Error.");
-            });
+        });
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success("Followed Successful.");
+            fetchAllSellers();
+            fetchAllFollowing();
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
     useEffect(() => {

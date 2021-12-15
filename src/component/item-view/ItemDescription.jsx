@@ -9,11 +9,11 @@ const ItemDescription = (props) => {
     const isBuyer = props.authenticate.token!=='' && props.authenticate.roles[0]==='BUYER';
     const [quantity, setQuantity] = useState(1);
 
-    const addToCart = () => {
+    const addToCart = async () => {
         setSpinning(true);
         let cartinfo = {productId:props.data.id, userId: props.authenticate.userId, quantity: quantity};
 
-        fetch(SERVER_LOC+"/cart", {
+        let response = await fetch(SERVER_LOC+"/cart", {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + props.authenticate.token,
@@ -21,15 +21,18 @@ const ItemDescription = (props) => {
                 },
                 body: JSON.stringify(cartinfo)
             }
-        )
-            .then(res=> {
-                setSpinning(false);
-                return res.json();
-            })
-            .then(result => {
-                message.info(result.message);
-                navigate('/cart');
-            });
+        );
+
+        let status = response.status;
+        let result = await response.json();
+
+        setSpinning(false);
+        if(status === 201){
+            message.success(result.message);
+        }
+        else{
+            message.error(result.message);
+        }
     };
 
     const handleChange = (e) => {

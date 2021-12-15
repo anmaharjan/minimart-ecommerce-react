@@ -16,27 +16,31 @@ const AddProductIndex = () => {
         setOnSale(e.target.checked);
     }
 
-    const onSaveProduct = (values) => {
+    const onSaveProduct = async (values) => {
         let product = values;
         product['onSale'] = onSale;
 
         product['userId'] = authenticate.userId;
 
-        fetch(SERVER_LOC + '/product', {
+        let response = await fetch(SERVER_LOC + '/product', {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + authenticate.token,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(product)
-        })
-            .then(res => {
-                return res.json();
-            })
-            .then(result=>{
-                message.info(result.message);
-                navigate('/');
-            })
+        });
+
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 201){
+            message.success(result.message);
+            navigate("/");
+        }
+        else{
+            message.error(result.message);
+        }
     }
 
     useEffect(() => {

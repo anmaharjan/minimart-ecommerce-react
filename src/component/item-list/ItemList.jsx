@@ -10,7 +10,6 @@ const ItemList = (props) => {
     const [items, setItems] = useState([]);
     const authenticate = useSelector(state => state.authenticate);
     const isSeller = authenticate.token!=='' && authenticate.roles[0]==='SELLER';
-    const [status, setStaus] = useState(0);
 
     const fetchItems = () => {
         axios.get(SERVER_LOC + "/product")
@@ -24,22 +23,24 @@ const ItemList = (props) => {
             })
     };
 
-    const deleteProduct = (id) => {
-        fetch(SERVER_LOC + "/product/" + id, {
+    const deleteProduct = async (id) => {
+        let response = await fetch(SERVER_LOC + "/product/" + id, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer ' + authenticate.token,
                 'Content-Type': 'application/json',
             }
-        })
-            .then(response => {
-                setStaus(response.status);
-                return response.json();
-            })
-            .then(res => {
-                message.info(res.message);
-                fetchItems();
-            })
+        });
+        let status = response.status;
+        let result = await response.json();
+
+        if(status === 200){
+            message.success(result.message);
+            fetchItems();
+        }
+        else{
+            message.error(result.message);
+        }
     }
 
     useEffect(() => {
