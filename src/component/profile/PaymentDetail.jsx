@@ -80,7 +80,7 @@ const PaymentDetail = (props) => {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input placeholder="MASTER / VISA / DEBIT"/>
                     </Form.Item>
 
                     <Form.Item

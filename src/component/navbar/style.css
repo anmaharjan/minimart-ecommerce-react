@@ -26,3 +26,7 @@
     position: fixed;
     z-index: 100;
 }
+
+.disabled-menu:hover{
+    color: transparent;
+}

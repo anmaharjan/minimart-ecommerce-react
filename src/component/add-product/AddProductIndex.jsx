@@ -20,6 +20,9 @@ const AddProductIndex = () => {
         let product = values;
         product['onSale'] = onSale;
 
+        if(!onSale){
+            product['salePrice'] = values.actualPrice;
+        }
         product['userId'] = authenticate.userId;
 
         let response = await fetch(SERVER_LOC + '/product', {
@@ -95,12 +98,6 @@ const AddProductIndex = () => {
                 <Form.Item
                     name="salePrice"
                     label="Sale Price"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Must not be empty',
-                        },
-                    ]}
                 >
                     <Input type="number"/>
                 </Form.Item>

@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import {Layout, Menu} from 'antd';
 import './style.css';
-import {Link, NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const {Header} = Layout;
 
@@ -10,6 +10,9 @@ const SellerNav = () => {
     return (
         <Header className="nav-bar-header">
             <Menu className="nav-bar-menu" theme="dark" mode="horizontal">
+                <Menu.Item className="disabled-menu" key="app" disabled>
+                    You are Seller
+                </Menu.Item>
                 <Menu.Item key="1">
                     <NavLink to="/">
                         <span>Home</span>

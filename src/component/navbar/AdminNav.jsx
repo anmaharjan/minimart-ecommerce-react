@@ -10,6 +10,9 @@ const AdminNav = () => {
     return (
         <Header className="nav-bar-header">
             <Menu className="nav-bar-menu" theme="dark" mode="horizontal">
+                <Menu.Item className="disabled-menu" key="app" disabled>
+                    You are Admin
+                </Menu.Item>
                 <Menu.Item key="1">
                     <NavLink to="/">
                         <span>Home</span>
